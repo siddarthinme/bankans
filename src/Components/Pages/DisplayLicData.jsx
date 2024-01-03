@@ -87,9 +87,16 @@ const DisplayLicData = () => {
             <TableRow sx={{ minHeight: 50 }}>
               <TableCell sx={{ minWidth: 100 }}>Commencement Date</TableCell>
               <TableCell sx={{ minWidth: 150 }}>Name</TableCell>
-              <TableCell sx={{ minWidth: 120 }}>Date of Birth</TableCell>
-              <TableCell sx={{ minWidth: 120 }}>Policy No.</TableCell>
-              <TableCell sx={{ minWidth: 80 }}>Premium</TableCell>
+              {/* Hide columns on mobile view */}
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                Date of Birth
+              </TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                Policy No.
+              </TableCell>
+              <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                Premium
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -101,9 +108,16 @@ const DisplayLicData = () => {
               >
                 <TableCell>{item.CommencementDate}</TableCell>
                 <TableCell>{item.Name}</TableCell>
-                <TableCell>{item.DOB}</TableCell>
-                <TableCell>{item.PolicyNo}</TableCell>
-                <TableCell>{item.Premium}</TableCell>
+                {/* Hide columns on mobile view */}
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                  {item.DOB}
+                </TableCell>
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                  {item.PolicyNo}
+                </TableCell>
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                  {item.Premium}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
