@@ -87,24 +87,25 @@ const DisplayLicData = () => {
   return (
     <Container maxWidth="auto" sx={{ mt: 2 }}>
       <Toolbar>
-        <Box>
+        <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <Typography variant="h4" align="center" gutterBottom>
             LIC Data
           </Typography>
         </Box>
         <Box sx={{ flexGrow: 1 }}></Box>
         <Box>
-          <Grid container>
-            <Grid item>
+          <Grid container spacing={2}>
+            <Grid item xs={6} md={6}>
               <TextField
                 label="Search"
                 variant="outlined"
                 size="small"
+                fullWidth
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={6} md={6}>
               <LicDataPage />
             </Grid>
           </Grid>
