@@ -10,7 +10,7 @@ import TransactionsPage from "../Components/Pages/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
 import { CssBaseline } from "@mui/material";
-import LicDataPage from "../Components/Pages/LicDataPage";
+import LicDataPage from "../Components/Pages/AddLicData";
 import VehicleInsurancePage from "../Components/Pages/VehicleInsurancePage";
 import DisplayLicData from "../Components/Pages/DisplayLicData";
 
@@ -27,7 +27,6 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/homepage" element={<HomePage />} />
-            <Route path="/licdata" element={<LicDataPage />} />
             <Route path="/displaylicdata" element={<DisplayLicData />} />
             <Route
               path="/vehicleinsurance"

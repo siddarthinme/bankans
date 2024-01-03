@@ -9,12 +9,26 @@ import {
   TableRow,
   Paper,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  IconButton,
+  Stack,
+  Grid,
+  Box,
+  Toolbar,
 } from "@mui/material";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
+import DeleteIcon from "@mui/icons-material/Delete";
+import LicDataPage from "./AddLicData";
 
 const DisplayLicData = () => {
   const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,53 +47,97 @@ const DisplayLicData = () => {
     fetchData();
   }, []);
 
+  const handleRowClick = (rowData) => {
+    setSelectedRow(rowData);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDeleteEntry = async () => {
+    try {
+      await deleteDoc(doc(db, "licdetails", selectedRow.id));
+      // Update the data after deletion
+      const updatedData = data.filter((item) => item.id !== selectedRow.id);
+      setData(updatedData);
+      handleCloseDialog();
+    } catch (error) {
+      console.error("Error deleting entry: ", error);
+    }
+  };
+
   return (
-    <Container maxWidth="auto" sx={{ mt: 10 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Display LIC Data
-      </Typography>
-      <TableContainer component={Paper}>
+    <Container maxWidth="auto" sx={{ mt: 2 }}>
+      <Toolbar>
+        <Box>
+          <Typography variant="h4" align="center" gutterBottom>
+            Display LIC Data
+          </Typography>
+        </Box>
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <Box>
+          <LicDataPage />
+        </Box>
+      </Toolbar>
+      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
         <Table>
           <TableHead>
             <TableRow sx={{ minHeight: 50 }}>
               <TableCell sx={{ minWidth: 100 }}>Commencement Date</TableCell>
               <TableCell sx={{ minWidth: 150 }}>Name</TableCell>
               <TableCell sx={{ minWidth: 120 }}>Date of Birth</TableCell>
-              <TableCell sx={{ minWidth: 100 }}>User Name</TableCell>
               <TableCell sx={{ minWidth: 120 }}>Policy No.</TableCell>
               <TableCell sx={{ minWidth: 80 }}>Premium</TableCell>
-              <TableCell sx={{ minWidth: 150 }}>Plan</TableCell>
-              <TableCell sx={{ minWidth: 50 }}>Policy Term</TableCell>
-              <TableCell sx={{ minWidth: 50 }}>Paying Term</TableCell>
-              <TableCell sx={{ minWidth: 50 }}>Sum Assured</TableCell>
-              <TableCell sx={{ minWidth: 120 }}>Date of Last Payment</TableCell>
-              <TableCell sx={{ minWidth: 100 }}>Nomination</TableCell>
-              <TableCell sx={{ minWidth: 120 }}>Maturity Date</TableCell>
-              <TableCell sx={{ minWidth: 250 }}>Comments</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item) => (
-              <TableRow key={item.id} sx={{ height: 40 }}>
-                <TableCell>{item.commencementDate}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.dob}</TableCell>
-                <TableCell>{item.uName}</TableCell>
-                <TableCell>{item.policyNo}</TableCell>
-                <TableCell>{item.premium}</TableCell>
-                <TableCell>{item.plan}</TableCell>
-                <TableCell>{item.policyTerm}</TableCell>
-                <TableCell>{item.premiumPayingTerm}</TableCell>
-                <TableCell>{item.sumAssured}</TableCell>
-                <TableCell>{item.dateOfLastPayment}</TableCell>
-                <TableCell>{item.nomination}</TableCell>
-                <TableCell>{item.maturityDate}</TableCell>
-                <TableCell>{item.comments}</TableCell>
+              <TableRow
+                key={item.id}
+                sx={{ height: 40, cursor: "pointer" }}
+                onClick={() => handleRowClick(item)}
+              >
+                <TableCell>{item.CommencementDate}</TableCell>
+                <TableCell>{item.Name}</TableCell>
+                <TableCell>{item.DOB}</TableCell>
+                <TableCell>{item.PolicyNo}</TableCell>
+                <TableCell>{item.Premium}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Details</DialogTitle>
+        <DialogContent>
+          {selectedRow && (
+            <>
+              <div>Commencement Date: {selectedRow.CommencementDate}</div>
+              <div>Name: {selectedRow.Name}</div>
+              <div>Date of Birth: {selectedRow.DOB}</div>
+              <div>Policy No.: {selectedRow.PolicyNo}</div>
+              <div>Premium: {selectedRow.Premium}</div>
+              <div>Username: {selectedRow.Username}</div>
+              <div>Plan: {selectedRow.Plan}</div>
+              <div>Policy Term: {selectedRow.PolicyTerm}</div>
+              <div>Premium Paying Term: {selectedRow.PremiumPayingTerm}</div>
+              <div>Sum Assured: {selectedRow.SumAssured}</div>
+              <div>Date Of Last Payment: {selectedRow.DateOfLastPayment}</div>
+              <div>Nomination: {selectedRow.Nomination}</div>
+              <div>Maturity Date: {selectedRow.MaturityDate}</div>
+              <div>Comments: {selectedRow.Comments}</div>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <IconButton color="error" onClick={handleDeleteEntry}>
+            <DeleteIcon />
+          </IconButton>
+          <Button onClick={handleCloseDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
