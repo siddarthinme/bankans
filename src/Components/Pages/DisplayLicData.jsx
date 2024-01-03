@@ -19,6 +19,7 @@ import {
   Grid,
   Box,
   Toolbar,
+  TextField,
 } from "@mui/material";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
@@ -27,8 +28,10 @@ import LicDataPage from "./AddLicData";
 
 const DisplayLicData = () => {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +42,7 @@ const DisplayLicData = () => {
           ...doc.data(),
         }));
         setData(data);
+        setFilteredData(data); // Initialize filteredData with all data
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -46,6 +50,17 @@ const DisplayLicData = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Update filteredData whenever the search term changes
+    const filteredResults = data.filter((item) =>
+      Object.values(item)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filteredResults);
+  }, [searchTerm, data]);
 
   const handleRowClick = (rowData) => {
     setSelectedRow(rowData);
@@ -62,6 +77,7 @@ const DisplayLicData = () => {
       // Update the data after deletion
       const updatedData = data.filter((item) => item.id !== selectedRow.id);
       setData(updatedData);
+      setFilteredData(updatedData);
       handleCloseDialog();
     } catch (error) {
       console.error("Error deleting entry: ", error);
@@ -73,12 +89,25 @@ const DisplayLicData = () => {
       <Toolbar>
         <Box>
           <Typography variant="h4" align="center" gutterBottom>
-            Display LIC Data
+            LIC Data
           </Typography>
         </Box>
         <Box sx={{ flexGrow: 1 }}></Box>
         <Box>
-          <LicDataPage />
+          <Grid container>
+            <Grid item>
+              <TextField
+                label="Search"
+                variant="outlined"
+                size="small"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Grid>
+            <Grid item>
+              <LicDataPage />
+            </Grid>
+          </Grid>
         </Box>
       </Toolbar>
       <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
@@ -87,7 +116,6 @@ const DisplayLicData = () => {
             <TableRow sx={{ minHeight: 50 }}>
               <TableCell sx={{ minWidth: 100 }}>Commencement Date</TableCell>
               <TableCell sx={{ minWidth: 150 }}>Name</TableCell>
-              {/* Hide columns on mobile view */}
               <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
                 Date of Birth
               </TableCell>
@@ -100,7 +128,7 @@ const DisplayLicData = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item) => (
+            {filteredData.map((item) => (
               <TableRow
                 key={item.id}
                 sx={{ height: 40, cursor: "pointer" }}
@@ -108,7 +136,6 @@ const DisplayLicData = () => {
               >
                 <TableCell>{item.CommencementDate}</TableCell>
                 <TableCell>{item.Name}</TableCell>
-                {/* Hide columns on mobile view */}
                 <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
                   {item.DOB}
                 </TableCell>
@@ -155,5 +182,4 @@ const DisplayLicData = () => {
     </Container>
   );
 };
-
 export default DisplayLicData;

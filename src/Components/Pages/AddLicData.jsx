@@ -94,7 +94,7 @@ const AddLicData = () => {
         onClick={handleOpenDialog}
         sx={{ mb: 4 }}
       >
-        Add LIC Data
+        Add
       </Button>
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
