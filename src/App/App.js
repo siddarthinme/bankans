@@ -10,12 +10,12 @@ import TransactionsPage from "../Components/Pages/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
 import { CssBaseline } from "@mui/material";
-import LicDataPage from "../Components/Pages/AddLicData";
 import VehicleInsurancePage from "../Components/Pages/VehicleInsurancePage";
 import DisplayLicData from "../Components/Pages/DisplayLicData";
 
 function App() {
   const { isLoggedIn } = useContext(Context);
+
   return (
     <>
       <CssBaseline />
@@ -34,11 +34,11 @@ function App() {
             />
           </>
         ) : (
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LoginPage />} />
         )}
+        <Route path="/homepage" element={<HomePage />} exact />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/reset" element={<ResetPassword />} />
-
         <Route path="/about" element={<AboutPage />} />
       </Routes>
     </>
