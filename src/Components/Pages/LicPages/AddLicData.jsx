@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -10,18 +10,20 @@ import {
   DialogActions,
   Grid,
 } from "@mui/material";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+import { db } from "../../../Firebase/Firebase";
+import CreditCardForm from "./LicDetailsDisplay";
 
-const AddLicData = () => {
+const AddLicData = (props) => {
   const [formData, setFormData] = useState({
+    Status: true,
+    InsuranceProvider: "",
     CommencementDate: "",
     Name: "",
     DOB: "",
     Username: "",
     PolicyNo: "",
     Premium: "",
-    CommencementDate__1: "",
     Plan: "",
     PolicyTerm: "",
     PremiumPayingTerm: "",
@@ -33,7 +35,35 @@ const AddLicData = () => {
     file: null,
   });
 
-  const [openDialog, setOpenDialog] = useState(false);
+  useEffect(() => {
+    if (props.editMode && props.selectedRow) {
+      // Populate formData with selectedRow data
+      setFormData({
+        ...props.selectedRow,
+        CommencementDate__1: props.selectedRow.CommencementDate,
+      });
+    } else {
+      // Clear form data when not in edit mode
+      setFormData({
+        CommencementDate: "",
+        Name: "",
+        DOB: "",
+        Username: "",
+        PolicyNo: "",
+        Premium: "",
+        CommencementDate__1: "",
+        Plan: "",
+        PolicyTerm: "",
+        PremiumPayingTerm: "",
+        SumAssured: "",
+        DateOfLastPayment: "",
+        Nomination: "",
+        MaturityDate: "",
+        Comments: "",
+        file: null,
+      });
+    }
+  }, [props.editMode, props.selectedRow]);
 
   const handleChange = (e) => {
     setFormData({
@@ -63,26 +93,25 @@ const AddLicData = () => {
     });
   };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const formsRef = collection(db, "licdetails");
-      await addDoc(formsRef, formData);
+
+      if (props.editMode) {
+        // Update data if in edit mode
+        await updateDoc(doc(db, "licdetails", props.selectedRow.id), formData);
+      } else {
+        // Add new data if not in edit mode
+        await addDoc(formsRef, formData);
+      }
 
       handleClearForm();
-      handleCloseDialog();
+      props.handleCloseAddDialog();
       console.log("Form data submitted successfully!");
     } catch (error) {
-      console.error("Error adding form data: ", error);
+      console.error("Error adding/updating form data: ", error);
     }
   };
 
@@ -91,17 +120,27 @@ const AddLicData = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={handleOpenDialog}
+        onClick={props.handleopenAddDialog}
         sx={{ mb: 4 }}
       >
         Add
       </Button>
-
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
+      {console.log("openAddDialog", props.openAddDialog)}
+      <Dialog open={props.openAddDialog} onClose={props.handleCloseAddDialog}>
         <DialogTitle>Add LIC Data</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit} type="Paper">
             <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Name"
+                  name="Name"
+                  fullWidth
+                  required
+                  value={formData.Name}
+                  onChange={handleChange}
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Commencement Date"
@@ -116,14 +155,16 @@ const AddLicData = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Name"
-                  name="Name"
+                  label="Insurance Provider"
+                  name="InsuranceProvider"
                   fullWidth
                   required
-                  value={formData.Name}
+                  InputLabelProps={{ shrink: true }}
+                  value={formData.InsuranceProvider}
                   onChange={handleChange}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Date of Birth"

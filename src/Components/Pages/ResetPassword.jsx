@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Container } from "@mui/material";
 import { auth, sendPasswordReset } from "../../Firebase/Firebase";
 
 function ResetPassword() {
@@ -16,32 +16,39 @@ function ResetPassword() {
   }, [user, loading]);
 
   return (
-    <div className="reset">
-      <div className="reset__container">
-        <TextField
-          type="text"
-          className="reset__textBox"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          label="E-mail Address"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          placeholder="E-mail Address"
-        />
-        <Button
-          className="reset__btn"
-          onClick={() => sendPasswordReset(email)}
-          variant="contained"
-          color="primary"
-        >
-          Send password reset email
-        </Button>
-        <Typography>
-          Don't have an account? <Link to="/register">Register</Link> now.
-        </Typography>
-      </div>
-    </div>
+    <Container
+      maxWidth="auto"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        mt: 12,
+      }}
+    >
+      <TextField
+        type="text"
+        className="reset__textBox"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        label="E-mail Address"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        placeholder="E-mail Address"
+      />
+      <Button
+        className="reset__btn"
+        onClick={() => sendPasswordReset(email)}
+        variant="contained"
+        color="primary"
+      >
+        Send password reset email
+      </Button>
+      <Typography>
+        Don't have an account? <Link to="/register">Register</Link> now.
+      </Typography>
+    </Container>
   );
 }
 
