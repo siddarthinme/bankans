@@ -133,7 +133,7 @@ const DisplayLicData = () => {
           <Box sx={{ flexGrow: 1 }}></Box>
           <Box>
             <Grid container spacing={2}>
-              <Grid item xs={8} md={8}>
+              <Grid item xs={10} md={10}>
                 <TextField
                   label="Search"
                   variant="outlined"
@@ -143,25 +143,23 @@ const DisplayLicData = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={1} md={1}>
+              <Grid item xs={2} md={2}>
                 <Tooltip title="Recycle Bin">
                   <IconButton onClick={() => setBin(!bin)}>
                     <AutoDeleteIcon />
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item xs={1} md={1}>
-                <LicDataPage
-                  editMode={editMode}
-                  openAddDialog={openAddDialog}
-                  handleCloseAddDialog={handleCloseAddDialog}
-                  handleopenAddDialog={handleopenAddDialog}
-                  selectedRow={selectedRow}
-                />
-              </Grid>
             </Grid>
           </Box>
         </Toolbar>
+        <LicDataPage
+          editMode={editMode}
+          openAddDialog={openAddDialog}
+          handleCloseAddDialog={handleCloseAddDialog}
+          handleopenAddDialog={handleopenAddDialog}
+          selectedRow={selectedRow}
+        />
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

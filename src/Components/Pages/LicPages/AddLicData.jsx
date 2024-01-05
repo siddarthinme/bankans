@@ -117,15 +117,6 @@ const AddLicData = (props) => {
 
   return (
     <Container>
-      {/* <Button
-        variant="contained"
-        color="primary"
-        onClick={props.handleopenAddDialog}
-        sx={{ mb: 4 }}
-      >
-        Add
-      </Button> */}
-      {console.log("openAddDialog", props.openAddDialog)}
       <Dialog open={props.openAddDialog} onClose={props.handleCloseAddDialog}>
         <DialogTitle>Add LIC Data</DialogTitle>
         <DialogContent>
