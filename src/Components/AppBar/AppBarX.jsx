@@ -18,13 +18,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { auth, db, logout } from "../../Firebase/Firebase";
 import { Container, Grid } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
+import SpeedDialX from "../Pages/LicPages/SpeedDialX";
 
 const navigationPages = [
   { label: "Home", route: "/homepage" },
   { label: "Transactions", route: "transactions" },
   { label: "LIC", route: "displaylicdata" },
   { label: "Vehicle Insurance", route: "vehicleinsurance" },
-  { label: "Create User", route: "register" },
   { label: "About", route: "about" },
 ];
 

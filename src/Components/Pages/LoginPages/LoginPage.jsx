@@ -4,7 +4,7 @@ import {
   auth,
   logInWithEmailAndPassword,
   signInWithGoogle,
-} from "../../Firebase/Firebase";
+} from "../../../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   TextField,
@@ -14,7 +14,7 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import Context from "../Context/Context";
+import Context from "../../Context/Context";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ function LoginPage() {
     }
     if (user) {
       setIsLoggedIn(true);
-      navigate("/dashboard");
+      navigate("/homepage");
     }
   }, [user, loading]);
 

@@ -13,7 +13,7 @@ import {
   auth,
   registerWithEmailAndPassword,
   signInWithGoogle,
-} from "../../Firebase/Firebase";
+} from "../../../Firebase/Firebase";
 
 function Register() {
   const [email, setEmail] = useState("");

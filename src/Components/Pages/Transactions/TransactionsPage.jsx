@@ -30,8 +30,8 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
-import { auth } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
+import { auth } from "../../../Firebase/Firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 

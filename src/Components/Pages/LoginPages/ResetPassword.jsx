@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { TextField, Button, Typography, Container } from "@mui/material";
-import { auth, sendPasswordReset } from "../../Firebase/Firebase";
+import { auth, sendPasswordReset } from "../../../Firebase/Firebase";
 
 function ResetPassword() {
   const [email, setEmail] = useState("");

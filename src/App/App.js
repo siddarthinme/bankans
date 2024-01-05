@@ -1,17 +1,17 @@
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "../Components/Pages/LoginPage";
-import SignUpPage from "../Components/Pages/Register";
-import ResetPassword from "../Components/Pages/ResetPassword";
-import Dashboard from "../Components/Pages/Dashboard";
-import AppBarX from "../Components/AppBar/AppBarX";
+import LoginPage from "../Components/Pages/LoginPages/LoginPage";
+import SignUpPage from "../Components/Pages/LoginPages/Register";
+import ResetPassword from "../Components/Pages/LoginPages/ResetPassword";
 import HomePage from "../Components/Pages/HomePage";
+import AppBarX from "../Components/AppBar/AppBarX";
 import AboutPage from "../Components/Pages/AboutPage";
-import TransactionsPage from "../Components/Pages/TransactionsPage";
+import TransactionsPage from "../Components/Pages/Transactions/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import VehicleInsurancePage from "../Components/Pages/VehicleInsurancePage";
 import DisplayLicData from "../Components/Pages/LicPages/DisplayLicData";
+import SpeedDialX from "../Components/Pages/LicPages/SpeedDialX";
 
 function App() {
   const { isLoggedIn } = useContext(Context);
@@ -26,12 +26,10 @@ function App() {
         <CssBaseline />
         <AppBarX />
         <Routes>
-          <Route path="/" element={<LoginPage />} />
           {isLoggedIn ? (
             <>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/homepage" element={<HomePage />} />
+              <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/displaylicdata" element={<DisplayLicData />} />
               <Route
                 path="/vehicleinsurance"
@@ -39,9 +37,8 @@ function App() {
               />
             </>
           ) : (
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<LoginPage />} />
           )}
-          <Route path="/homepage" element={<HomePage />} />
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/reset" element={<ResetPassword />} />
           <Route path="/about" element={<AboutPage />} />
