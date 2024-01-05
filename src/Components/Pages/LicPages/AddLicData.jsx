@@ -9,10 +9,12 @@ import {
   DialogContent,
   DialogActions,
   Grid,
+  IconButton,
+  Box,
 } from "@mui/material";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../Firebase/Firebase";
-import CreditCardForm from "./LicDetailsDisplay";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AddLicData = (props) => {
   const [formData, setFormData] = useState({
@@ -119,6 +121,24 @@ const AddLicData = (props) => {
     <Container>
       <Dialog open={props.openAddDialog} onClose={props.handleCloseAddDialog}>
         <DialogTitle>Add LIC Data</DialogTitle>
+        <Box
+          component="span"
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 0,
+            margin: 1,
+          }}
+        >
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={props.handleCloseAddDialog}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <DialogContent>
           <form onSubmit={handleSubmit} type="Paper">
             <Grid container spacing={2} sx={{ mt: 1 }}>
